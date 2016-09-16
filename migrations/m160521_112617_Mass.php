@@ -17,7 +17,6 @@ class m160521_112617_Mass extends Migration {
                 'id' => Schema::TYPE_PK . "",
                 'category_id' => Schema::TYPE_INTEGER . "(10)",
                 'producer_id' => Schema::TYPE_INTEGER . "(11)",
-                'amount' => Schema::TYPE_INTEGER . "(11)",
                 'related_products' => Schema::TYPE_TEXT . " COMMENT 'PHP serialize'",
                 'name' => Schema::TYPE_STRING . "(200) NOT NULL",
                 'code' => Schema::TYPE_STRING . "(155)",
@@ -87,7 +86,37 @@ class m160521_112617_Mass extends Migration {
                 'date' => Schema::TYPE_INTEGER . "(11) NOT NULL",
                 'content' => Schema::TYPE_TEXT . "",
             ], $tableOptions);
+
+            $this->createTable( '{{%shop_outcoming}}',[
+                'id' => Schema::TYPE_PK . "",
+                'date' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                'content' => Schema::TYPE_TEXT . "",
+            ], $tableOptions);
             
+            $this->createTable( '{{%shop_stock}}',[
+                'id' => Schema::TYPE_PK . "",
+                'name' => Schema::TYPE_STRING . "(255) NOT NULL",
+                'address' => Schema::TYPE_STRING . "(255) NOT NULL",
+                'text' => Schema::TYPE_TEXT . "",
+            ], $tableOptions);
+
+            $this->createTable('{{%shop_stock_to_product}}', [
+                'id' => Schema::TYPE_PK . "",
+                'product_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                'stock_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                'amount' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                ], $tableOptions);
+
+            $this->createTable('{{%shop_stock_to_user}}', [
+                'id' => Schema::TYPE_PK . "",
+                'user_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                'stock_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
+                ], $tableOptions);
+
+            $this->addForeignKey(
+                'fk_stock', '{{%shop_stock_to_product}}', 'stock_id', '{{%shop_stock}}', 'id', 'CASCADE', 'CASCADE'
+            );
+
             $this->addForeignKey(
                 'fk_category', '{{%shop_product}}', 'category_id', '{{%shop_category}}', 'id', 'CASCADE', 'CASCADE'
             );
@@ -126,6 +155,10 @@ class m160521_112617_Mass extends Migration {
             $this->dropTable('{{%shop_producer}}');
             $this->dropTable('{{%shop_product_to_category}}');
             $this->dropTable('{{%shop_incoming}}');
+            $this->dropTable('{{%shop_outcoming}}');
+            $this->dropTable('{{%shop_stock}}');
+            $this->dropTable('{{%shop_stock_to_product}}');
+            $this->dropTable('{{%shop_stock_to_user}}');
         } catch (Exception $e) {
             echo 'Catch Exception ' . $e->getMessage() . ' ';
         }

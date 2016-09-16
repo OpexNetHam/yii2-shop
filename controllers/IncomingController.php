@@ -44,7 +44,7 @@ class IncomingController extends Controller
             
             foreach($post['element'] as $id => $count) {
                 if($product = $productModel::findOne($id)) {
-                    $product->plusAmount($count);
+                    $product->plusAmount($count, true);
                 }
             }
             

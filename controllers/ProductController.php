@@ -3,6 +3,7 @@ namespace pistol88\shop\controllers;
 
 use Yii;
 use pistol88\shop\models\product\ProductSearch;
+use pistol88\shop\models\stock\StockSearch;
 use pistol88\shop\models\price\PriceSearch;
 use pistol88\shop\models\PriceType;
 use pistol88\shop\events\ProductEvent;
@@ -91,6 +92,11 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $typeParams = Yii::$app->request->queryParams;
+        $typeParams['StockSearch']['product_id'] = $id;
+        $StockSearch = new StockSearch();
+        $StockDataProvider = $StockSearch->search($typeParams);
+
 
         $searchModel = new PriceSearch();
         $typeParams = Yii::$app->request->queryParams;
@@ -110,6 +116,8 @@ class ProductController extends Controller
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'priceModel' => $priceModel,
+                'StockSearch' => $StockSearch,
+                'StockDataProvider' => $StockDataProvider,
             ]);
         }
     }

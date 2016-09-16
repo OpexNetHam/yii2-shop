@@ -12,6 +12,10 @@ use yii\bootstrap\Nav;
             'url' => ['/shop/incoming/create'],
         ],
         [
+            'label' => 'Отправление',
+            'url' => ['/shop/outcoming/create'],
+        ],
+        [
             'label' => 'Категории',
             'url' => ['/shop/category/index'],
         ],

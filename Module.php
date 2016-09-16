@@ -9,8 +9,8 @@ class Module extends \yii\base\Module
     public $modelMap = [];
     public $defaultTypeId = null;
     public $priceType = null; //callable, возвращающая type_id цены
-    public $categoryUrlPrefix = '/shop/category/view';
-    public $productUrlPrefix = '/shop/product/view';
+    public $categoryUrlPrefix = '/category/view';
+    public $productUrlPrefix = '/product/view';
     
     const EVENT_PRODUCT_CREATE = 'create_product';
     const EVENT_PRODUCT_DELETE = 'delete_product';
@@ -23,8 +23,11 @@ class Module extends \yii\base\Module
                 'product' => '\pistol88\shop\models\Product',
                 'category' => '\pistol88\shop\models\Category',
                 'incoming' => '\pistol88\shop\models\Incoming',
+                'outcoming' => '\pistol88\shop\models\outcoming',
                 'producer' => '\pistol88\shop\models\Producer',
-                'price' => '\pistol88\shop\models\Price'
+                'price' => '\pistol88\shop\models\Price',
+                'stock' => '\pistol88\shop\models\Stock',
+                'order' => 'pistol88\order\models\Order',
             ];
         }
         

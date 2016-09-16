@@ -87,7 +87,39 @@ $this->params['breadcrumbs'][] = 'Обновить';
                     'model' => $priceModel,
                     'productModel' => $model,
                 ]) ?>
-                
+                <h2>Склады</h2>
+                <?php if($StockDataProvider->getCount()) { ?>
+                    <?= GridView::widget([
+                        'dataProvider' => $StockDataProvider,
+                        'filterModel' => $StockSearch,
+                        'columns' => [
+                            //['class' => 'yii\grid\SerialColumn', 'options' => ['style' => 'width: 20px;']],
+                            ['attribute' => 'id', 'filter' => false, 'options' => ['style' => 'width: 25px;']],
+                            ['attribute' => 'name', 'filter' => false, 'options' => ['style' => 'width: 100px;']],
+                            [
+                                'class' => EditableColumn::className(),
+                                'attribute' => $model->id,
+                                'label'=>'Количество',
+                                'value' => function($data) use($model) {
+                                    return $data->getProductAmount($model->id);
+                                },
+                                'url' => ['stock/edit-field'],
+                                'type' => 'text',
+                                'editableOptions' => [
+                                    'mode' => 'inline',
+                                ],
+                                'filter' => false, /*Html::activeDropDownList(
+                                    $searchModel,
+                                    'available',
+                                    ['no' => 'Нет', 'yes' => 'Да'],
+                                    ['class' => 'form-control', 'prompt' => 'Наличие']
+                                ),*/
+                                'contentOptions' => ['style' => 'width: 27px;']
+                            ],
+                            ['class' => 'yii\grid\ActionColumn', 'controller' => 'price', 'template' => '',  'buttonOptions' => ['class' => 'btn btn-default'], 'options' => ['style' => 'width: 30px;']],
+                        ],
+                    ]); ?>
+                <?php } ?>
                 <?php if($filterPanel = \pistol88\filter\widgets\Choice::widget(['model' => $model])) { ?>
                     <div class="block">
                         <h2>Фильтр</h2>
